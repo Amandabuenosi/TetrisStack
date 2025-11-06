@@ -5,17 +5,13 @@
 #define TAM_FILA 5
 #define TAM_PILHA 3
 
-// ======================================
-// ESTRUTURA DAS PEÇAS
-// ======================================
+// PEÇAS
 typedef struct {
-    char nome; // Tipo da peça ('I', 'O', 'T', 'L')
-    int id;    // Identificador único
+    char nome; // ('I', 'O', 'T', 'L')
+    int id;    //
 } Peca;
 
-// ======================================
 // ESTRUTURAS DE DADOS
-// ======================================
 
 // Fila circular de peças futuras
 typedef struct {
@@ -31,9 +27,7 @@ typedef struct {
     int topo;
 } Pilha;
 
-// ======================================
-// FUNÇÕES DE CONTROLE DE FILA
-// ======================================
+// CONTROLE DE FILA
 void inicializarFila(Fila *f) {
     f->frente = 0;
     f->tras = -1;
@@ -64,9 +58,7 @@ Peca desenfileirar(Fila *f) {
     return p;
 }
 
-// ======================================
-// FUNÇÕES DE CONTROLE DE PILHA
-// ======================================
+// CONTROLE DE PILHA
 void inicializarPilha(Pilha *p) {
     p->topo = -1;
 }
@@ -81,29 +73,27 @@ int pilhaVazia(Pilha *p) {
 
 void empilhar(Pilha *p, Peca novo) {
     if (pilhaCheia(p)) {
-        printf("\n❌ Pilha cheia! Nao e possivel reservar mais pecas.\n");
+        printf("\nPilha cheia! Nao e possivel reservar mais pecas.\n");
         return;
     }
     p->topo++;
     p->pecas[p->topo] = novo;
-    printf("\n📦 Peca [%c %d] adicionada à pilha de reserva.\n", novo.nome, novo.id);
+    printf("\nPeca [%c %d] adicionada à pilha de reserva.\n", novo.nome, novo.id);
 }
 
 Peca desempilhar(Pilha *p) {
     Peca removida = {'-', -1};
     if (pilhaVazia(p)) {
-        printf("\n❌ Pilha vazia! Nenhuma peca para usar.\n");
+        printf("\nPilha vazia! Nenhuma peca para usar.\n");
         return removida;
     }
     removida = p->pecas[p->topo];
     p->topo--;
-    printf("\n🎮 Peca [%c %d] usada da pilha.\n", removida.nome, removida.id);
+    printf("\nPeca [%c %d] usada da pilha.\n", removida.nome, removida.id);
     return removida;
 }
 
-// ======================================
 // FUNÇÃO DE GERAÇÃO DE PEÇAS AUTOMÁTICA
-// ======================================
 Peca gerarPeca(int id) {
     char tipos[] = {'I', 'O', 'T', 'L'};
     Peca nova;
@@ -112,9 +102,7 @@ Peca gerarPeca(int id) {
     return nova;
 }
 
-// ======================================
 // FUNÇÃO DE EXIBIÇÃO DO ESTADO
-// ======================================
 void exibirEstado(Fila *f, Pilha *p) {
     printf("\n=== ESTADO ATUAL ===\n");
 
@@ -139,14 +127,12 @@ void exibirEstado(Fila *f, Pilha *p) {
     printf("\n====================\n");
 }
 
-// ======================================
 // TROCAS ENTRE FILA E PILHA
-// ======================================
 
 // Troca a peça da frente da fila com o topo da pilha
 void trocarTopo(Fila *f, Pilha *p) {
     if (filaVazia(f) || pilhaVazia(p)) {
-        printf("\n❌ Impossível trocar! Fila ou pilha vazia.\n");
+        printf("\nImpossível trocar! Fila ou pilha vazia.\n");
         return;
     }
     int idxFrente = f->frente;
@@ -159,7 +145,7 @@ void trocarTopo(Fila *f, Pilha *p) {
 // Troca múltipla: 3 primeiros da fila ↔ 3 da pilha
 void trocaMultipla(Fila *f, Pilha *p) {
     if (f->qtd < 3 || p->topo < 2) {
-        printf("\n❌ Troca múltipla indisponível (menos de 3 peças em uma das estruturas).\n");
+        printf("\nTroca múltipla indisponível (menos de 3 peças em uma das estruturas).\n");
         return;
     }
 
@@ -170,12 +156,10 @@ void trocaMultipla(Fila *f, Pilha *p) {
         p->pecas[p->topo - i] = temp;
     }
 
-    printf("\n🔁 Troca múltipla realizada entre as 3 primeiras da fila e as 3 da pilha!\n");
+    printf("\nTroca múltipla realizada entre as 3 primeiras da fila e as 3 da pilha!\n");
 }
 
-// ======================================
 // FUNÇÃO PRINCIPAL
-// ======================================
 int main() {
     Fila fila;
     Pilha pilha;
@@ -192,7 +176,7 @@ int main() {
 
     do {
         printf("\n===== MENU TETRIS STACK =====\n");
-        printf("1 - Jogar peca da frente da fila\n");
+        printf("1 - Jogar peca da frente da fila\n"); //dequeue
         printf("2 - Enviar peca da fila para pilha de reserva\n");
         printf("3 - Usar peca da pilha de reserva\n");
         printf("4 - Trocar frente da fila com topo da pilha\n");
@@ -208,7 +192,7 @@ int main() {
                 // Jogar peça (remove da fila e gera nova)
                 Peca jogada = desenfileirar(&fila);
                 if (jogada.id != -1) {
-                    printf("\n🎮 Peca [%c %d] jogada do campo!\n", jogada.nome, jogada.id);
+                    printf("\nPeca [%c %d] jogada do campo!\n", jogada.nome, jogada.id);
                     if (!filaCheia(&fila)) {
                         enfileirar(&fila, gerarPeca(idGerado++));
                     }
@@ -218,7 +202,7 @@ int main() {
             case 2: {
                 // Reservar peça (fila → pilha)
                 if (pilhaCheia(&pilha)) {
-                    printf("\n❌ Pilha cheia! Nao e possivel reservar mais pecas.\n");
+                    printf("\nPilha cheia! Nao e possivel reservar mais pecas.\n");
                 } else {
                     Peca reservada = desenfileirar(&fila);
                     if (reservada.id != -1) {
@@ -243,10 +227,10 @@ int main() {
                 exibirEstado(&fila, &pilha);
                 break;
             case 0:
-                printf("\n🏁 Encerrando o jogo... Ate a proxima!\n");
+                printf("\nEncerrando o jogo... Ate a proxima!\n");
                 break;
             default:
-                printf("\n❌ Opcao invalida! Tente novamente.\n");
+                printf("\nOpcao invalida! Tente novamente.\n");
         }
 
     } while (opcao != 0);
