@@ -4,8 +4,6 @@
 
 #define TAM_FILA 5  
 
-// ESTRUTURA DE DADOS
-
 // Representa uma peça do jogo
 typedef struct {
     char nome;  // Tipo da peça: 'I', 'O', 'T', 'L'
@@ -20,7 +18,6 @@ typedef struct {
     int qtd;     // Quantidade de peças atuais
 } Fila;
 
-// FUNÇÕES DE MANIPULAÇÃO DA FILA
 
 // Inicializa a fila vazia
 void inicializarFila(Fila *f) {
@@ -44,38 +41,38 @@ Peca gerarPeca(int id) {
     char tipos[] = {'I', 'O', 'T', 'L'};
     Peca nova;
     nova.nome = tipos[rand() % 4]; // Tipo aleatório
-    nova.id = id;                  // Identificador único
+    nova.id = id;                  
     return nova;
 }
 
-// Adiciona uma nova peça ao final da fila (enqueue)
+// nova peça ao final da fila (enqueue)
 void enfileirar(Fila *f, Peca p) {
     if (filaCheia(f)) {
-        printf("\n❌ Fila cheia! Nao e possivel adicionar nova peca.\n");
+        printf("\nFila cheia! Nao e possivel adicionar nova peca.\n");
         return;
     }
     f->tras = (f->tras + 1) % TAM_FILA;
     f->pecas[f->tras] = p;
     f->qtd++;
-    printf("✅ Peca [%c %d] adicionada ao final da fila!\n", p.nome, p.id);
+    printf("Peca [%c %d] adicionada ao final da fila!\n", p.nome, p.id);
 }
 
-// Remove a peça da frente da fila (dequeue)
+// Remove da frente da fila (dequeue)
 void desenfileirar(Fila *f) {
     if (filaVazia(f)) {
-        printf("\n❌ Fila vazia! Nenhuma peca para jogar.\n");
+        printf("\nFila vazia! Nenhuma peca para jogar.\n");
         return;
     }
     Peca removida = f->pecas[f->frente];
     f->frente = (f->frente + 1) % TAM_FILA;
     f->qtd--;
-    printf("\n🎮 Peca [%c %d] jogada!\n", removida.nome, removida.id);
+    printf("\nPeca [%c %d] jogada!\n", removida.nome, removida.id);
 }
 
-// Exibe o estado atual da fila
+// estado atual da fila
 void exibirFila(Fila *f) {
     if (filaVazia(f)) {
-        printf("\n📦 Fila vazia!\n");
+        printf("\nFila vazia!\n");
         return;
     }
 
@@ -87,7 +84,7 @@ void exibirFila(Fila *f) {
     printf("\n=============================\n");
 }
 
-// FUNÇÃO PRINCIPAL
+
 int main() {
     Fila fila;
     int opcao, idGerado = 0;
@@ -95,12 +92,12 @@ int main() {
 
     inicializarFila(&fila);
 
-    // Inicializa a fila com 5 peças aleatórias
+    // fila com 5 peças aleatórias
     for (int i = 0; i < TAM_FILA; i++) {
         enfileirar(&fila, gerarPeca(idGerado++));
     }
 
-        // MENU PRINCIPAL
+        // MENU
         do {
         printf("\n===== MENU TETRIS STACK =====\n");
         printf("1 - Visualizar fila de pecas\n");
@@ -123,10 +120,10 @@ int main() {
                 enfileirar(&fila, gerarPeca(idGerado++));
                 break;
             case 0:
-                printf("\n🏁 Encerrando o jogo... Ate a proxima!\n");
+                printf("\nEncerrando o jogo... Ate a proxima!\n");
                 break;
             default:
-                printf("\n❌ Opcao invalida! Tente novamente.\n");
+                printf("\nOpcao invalida! Tente novamente.\n");
         }
 
     } while (opcao != 0);
